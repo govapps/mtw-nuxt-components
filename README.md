@@ -23,9 +23,16 @@ pnpm add govapps/mtw-nuxt-components
 ### 2. Add config in file `nuxt.config.ts`
 ``` ts
 components: [
-    "~/node_modules/mtw-nuxt-components/components"
+  "~/node_modules/mtw-nuxt-components/components"
 ]
 ```
+### 3. Add config in file `tailwind.config.ts`
+``` ts
+module.exports = {
+  content: [
+    "./node_modules/mtw-nuxt-components/components/**/*.{js,vue,ts}",
+  ],
+``` 
 
 ### 3. Use the components:
 To use a component in your Nuxt.js project, import it in any component where you want to use it. For example:

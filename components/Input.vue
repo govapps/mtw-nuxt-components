@@ -1,6 +1,7 @@
 <template>
   <label class="text-left block text-sm font-medium leading-6 text-gray-900">{{ label }}</label>
   <div class="mt-2">
+    <ClientOnly>
     <component
       :is="variant ?? 'input'"
       :id="id"
@@ -39,6 +40,7 @@
 
       @blur="_onBlur($event)"
     />
+    </ClientOnly>
 
     <p
       v-if="showHelperText || _showHelperText"
