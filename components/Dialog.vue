@@ -80,24 +80,18 @@
 
 <script lang="ts" setup>
 import { ExclamationTriangleIcon, } from "@heroicons/vue/24/outline";
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot, } from "@headlessui/vue";
-
-defineProps({
-  onClose: {
-    default: () => null,
-    type: Function
-  },
-  isOpen: {
-    default: false,
-    type: Boolean
-  },
-  messageAccept: {
-    require: true,
-    type: String,
-  },
-  messageCancel: {
-    require: true,
-    type: String,
-  }
-});
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  TransitionChild,
+  TransitionRoot,
+} from "@headlessui/vue";
+defineProps<{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onClose:(value: boolean) => void;
+  isOpen?: boolean;
+  messageAccept: string;
+  messageCancel: string;
+}>();
 </script>
