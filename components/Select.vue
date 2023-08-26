@@ -51,79 +51,47 @@ const _isError = ref(false);
 const _showHelperText = ref(false);
 const _valid = ref(false);
 
-const props = defineProps({
-  id: { type: String },
-  name: { type: String },
-  value: {
-    type: [String, Object, Number],
-    default: ""
-  },
-  label: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Array,
-    default: []
-  },
-  fieldValue: {
-    type: String,
-    default: ''
-  },
-  fieldLabel: {
-    type: String,
-    default: ''
-  },
-  isError: {
-    type: Boolean,
-    default: false
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  showHelperText: {
-    type: Boolean,
-    default: false
-  },
-  helperText: {
-    type: String,
-    default: ""
-  },
-  onChange:{
-    type: Function,
-    default: (event: any) => {}
-  },
-  onBlur:{
-    type: Function,
-    default: (event: any) => {}
-  },
-  validateWithOnBlur: {
-    type: Boolean,
-    default: false
-  },
-  validateWhen:{
-    type: Function,
-    default: undefined
-  },
-  validate:{
-    type: [Function, String],
-    default: undefined
-  },
-  onValidate:{
-    type: Function,
-    default: undefined
-  },
-  validateOnUpdate: {
-    type: Boolean,
-    default: false
-  },
-});
+const props = defineProps<{
+  options: Array;
+  fieldLabel: string;
+  fieldValue: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChange?:(value: string, event: any) => void;
+  id?: string;
+  name?: string;
+  value?: any;
+  label?: string;
+  placeholder?: string;
+  isError?: boolean;
+  disabled?: boolean;
+  showHelperText?: boolean;
+  helperText?: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onBlur?: (value: string, event: any) => void;
+  validateWithOnBlur?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  validateWhen?: (value: string) => boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  validate?: (value: string) => boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onValidate?: (isError: boolean) => void;
+  validateOnUpdate?: boolean;
+}>();
 
 function validateInput(){
     _valid.value = false;
+
+    var flag = true;
+    if(props.value){
+      var valueType = typeof(props.value)
+      if(valueType!='number' && valueType!='string'){
+        flag = false;
+        console.log("[Error] - Invalid type for select tag value"); 
+      }
+    }
+
     var options = props.options;
-    if( options ){
+    if( options && flag){
         if( Array.isArray(options) ){
             if( options.length > 0){
                 var typ = typeof(options[0]);
