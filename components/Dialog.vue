@@ -90,7 +90,7 @@ import {
 defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onClose:(value: boolean) => void;
-  isOpen?: boolean;
+  isOpen: boolean;
   messageAccept: string;
   messageCancel: string;
 }>();
