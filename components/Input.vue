@@ -123,10 +123,9 @@ function _onChange (event: any) {
 function _onBlur (event: any) {
   if (props.onBlur) {
     props?.onBlur(event.target.value, event);
-
-    if (props.validateWithOnBlur) {
-      _onValidate();
-    }
+  }
+  if (props.validateWithOnBlur) {
+    _onValidate();
   }
 }
 
