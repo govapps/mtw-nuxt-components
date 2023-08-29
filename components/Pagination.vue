@@ -80,15 +80,17 @@ function _onClick (event: any, page: number) {
   }
 }
 
-onMounted(() => {
-  if(props.total){
+ if(props.total){
+    _total.value = props.total;
+  }
+
+function checkInput() {
     if(props.showPrevNext){
       _showNav.value = props.showPrevNext;
     }
     if(props.perPage){
       _perPage.value = props.perPage;
     }
-    _total.value = props.total;
     if( _total.value > _perPage.value ){
         _max.value = Math.ceil(_total.value / _perPage.value);
         var pages = [];
@@ -98,6 +100,13 @@ onMounted(() => {
         _listPages.value = pages;
         _valid.value = true;
     }
-  }
+}
+
+watch(_total, value => {
+    checkInput();
+  }, {deep: true, immediate: true})
+
+onMounted(() => {
+  checkInput();
 });
 </script>
