@@ -29,8 +29,8 @@
           focus:ring-primary-600
           sm:text-sm
           sm:leading-6
-          ${isError && 'border-2 focus:ring-red-500 border-red-500 focus:border-red-500'}
-          ${isError && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
+          ${isError || _isError && 'border-2 focus:ring-red-400 border-red-400 focus:border-red-400'}
+          ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
           ${disabled ? 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200' : ''}
         `"
         :value="value"
@@ -58,6 +58,7 @@ import { ref, onMounted, onUpdated, } from "vue";
 const _value = ref("");
 const _isError = ref(false);
 const _showHelperText = ref(false);
+const _validated = ref(false);
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -101,6 +102,7 @@ function _onValidate () {
 
     props?.onValidate(error);
 
+    _validated.value = !error;
     _showHelperText.value = error;
     _isError.value = error;
   }
