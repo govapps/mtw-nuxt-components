@@ -23,6 +23,7 @@
           />
         </svg>
       </span>
+      
       <span
         :class="[enabled ? 'opacity-100 duration-200 ease-in' : 'opacity-0 duration-100 ease-out', 'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity']"
         aria-hidden="true"

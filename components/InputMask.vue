@@ -2,15 +2,9 @@
   <div>
     <label class="text-left block text-sm font-medium leading-6 text-gray-900">{{ label }}</label>
     <div class="mt-2">
-      <component
-        :is="variant ?? 'input'"
-        :id="id"
-        :ref="(el: any) => {
-          if(el && blockPaste) el.onpaste = (e: Event) => e.preventDefault();
-          if(el && blockCopy) el.oncopy = (e: Event) => e.preventDefault();
-        }"
+      <input
         :name="name"
-        :type="type ?? 'text'"
+        type="text"
         :placeholder="placeholder"
         :class="`
           block
@@ -39,6 +33,10 @@
         @input="_onChange($event)"
 
         @blur="_onBlur($event)"
+
+        ref="_element" 
+        @keyup="_onChangeMask" 
+        @keydown="_onChangeMask"
       />
 
       <p
@@ -50,25 +48,20 @@
       </p>
     </div>
   </div>
+
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUpdated, } from "vue";
-
-const _value = ref("");
-const _isError = ref(false);
-const _showHelperText = ref(false);
-const _validated = ref(false);
-
+  
 const props = defineProps<{
+    mask: string;
+    format: string;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange?:(value: string, event: any) => void;
-  variant?: string;
   id?: string;
   name?: string;
   value?: string;
   label?: string;
-  type?: string;
   placeholder?: string;
   isError?: boolean;
   disabled?: boolean;
@@ -84,12 +77,20 @@ const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onValidate?: (isError: boolean) => void;
   validateOnUpdate?: boolean;
-  blockPaste?: boolean;
-  blockCopy?: boolean;
-}>();
+  }>();
+
+const _element = ref(null);
+const _pattern = ref("");
+const _mask = ref("");
+const _value = ref("");
+const _isError = ref(false);
+const _showHelperText = ref(false);
+const _validated = ref(false);
 
 onMounted(() => {
-  _value.value = props?.value ?? "";
+  _pattern.value = props.format;
+  _mask.value = props.mask;
+  _onChangeMask();
 });
 
 function _onValidate () {
@@ -132,9 +133,47 @@ function _onBlur (event: any) {
 }
 
 onUpdated(() => {
-  if (props.validateOnUpdate) {
-    _onValidate();
-  }
+  _pattern.value = props.format;
+  _mask.value = props.mask;
+  _onChangeMask();
 });
+
+function doFormat(x: string, pattern: string, mask: string) {
+  var strippedValue = x.replace(/[^0-9]/g, "");
+  var chars = strippedValue.split('');
+  var count = 0;
+
+  var formatted = '';
+  for (var i=0; i<pattern.length; i++) {
+    const c = pattern[i];
+    if (chars[count]) {
+      if (/\*/.test(c)) {
+        formatted += chars[count];
+        count++;
+      } else {
+        formatted += c;
+      }
+    } else if (mask) {
+      if (mask.split('')[i])
+        formatted += mask.split('')[i];
+    }
+  }
+  return formatted;
+}
+
+function _onChangeMask() {
+    var elem = _element.value;
+    const val = doFormat(elem.value, _pattern.value);
+    elem.value = doFormat(elem.value, _pattern.value, _mask.value );
+    
+    if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.move('character', val.length);
+      range.select();
+    } else if (elem.selectionStart) {
+      elem.focus();
+      elem.setSelectionRange(val.length, val.length);
+    }
+  }
 
 </script>
