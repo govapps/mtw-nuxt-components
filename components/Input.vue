@@ -29,7 +29,7 @@
           focus:ring-primary-600
           sm:text-sm
           sm:leading-6
-          ${isError && 'border-2 focus:ring-red-500 border-red-500 focus:border-red-500'}
+          ${isError || _isError && 'border-2 focus:ring-red-400 border-red-400 focus:border-red-400'}
           ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
           ${disabled ? 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200' : ''}
         `"
