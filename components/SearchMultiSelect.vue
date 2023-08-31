@@ -5,19 +5,22 @@
         <Combobox v-model="_selectedMany" multiple  >
             <div class="relative mt-1">
                 <div
-                  class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
+                  :class = "`relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm
+                  ${isError || _isError && 'border-2 focus:ring-red-400 border-red-400 focus:border-red-400'}
+                  ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
+                  `"
                 >
                   
                   <ComboboxInput
                     class="block  w-full  rounded-md  border-0  py-1.5  text-gray-900  shadow-sm  ring-1  ring-inset  ring-gray-300  placeholder:text-gray-400  focus:ring-2  focus:ring-inset  focus:ring-primary-600  sm:text-sm  sm:leading-6"
                     @change="_query = $event.target.value"
                     :displayValue="(o) => o[fieldLabel]"
-                    v-if="hasSearch"
-                    placeholder="pesquisar Unidade"
+                    v-show="hasSearch"
+                    :placeholder="_placeholder"
+                    :open="true"
+                    @blur="_onBlur();"
+
                   />
-                  <ComboboxInput 
-                     class="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                  v-else  />
                   
                   <ComboboxButton
                     class="absolute inset-y-0 right-0 flex items-center pr-2"
@@ -34,7 +37,7 @@
                   leave="transition ease-in duration-100"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
-                  @after-leave="_query = ''"
+                  @after-leave="_query = ''; _onBlur();"
                 >
                   <ComboboxOptions
                     class=" absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
@@ -88,6 +91,7 @@
               </div>
         </Combobox>
 
+        <p v-if="showHelperText || _showHelperText" class="text-sm mt-1" :class="{'text-red-500': isError || _isError}">{{ helperText }}</p>
     </div>
   </div>
 </template>
@@ -98,10 +102,10 @@
     Combobox,
     ComboboxInput,
     ComboboxLabel,
-  ComboboxButton,
-  ComboboxOptions,
-  ComboboxOption,
-  TransitionRoot,
+    ComboboxButton,
+    ComboboxOptions,
+    ComboboxOption,
+    TransitionRoot,
   } from '@headlessui/vue'
 
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
@@ -114,6 +118,20 @@ const props = defineProps<{
     hasSearch?: boolean;
     label?: string;
     onChange?: (value: any) => void;
+    placeholder?: string;
+    isError?: boolean;
+    showHelperText?: boolean;
+    helperText?: string;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onBlur?: (value: string, event: any) => void;
+    validateWithOnBlur?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    validateWhen?: (value: string) => boolean;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    validate?: (value: string) => boolean;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onValidate?: (isError: boolean) => void;
+    validateOnUpdate?: boolean;
   }>();
 
 const _query = ref("");
@@ -126,98 +144,68 @@ const _filteredOptions = computed(() =>
   );
 const _value = ref([]);
 const _selectedMany = ref([]);
-const _valid = ref(false);
-
-function validateInput(){
-    _valid.value = false;
-
-    var flag = true;
-    if(props.value){
-      var valueType = typeof(props.value)
-      if(valueType!='number' && valueType!='string'){
-        flag = false;
-        console.log("[Error] - Invalid type for select tag value"); 
-      }
-    }
-
-    var options = props.options;
-    if( options && flag){
-        if( Array.isArray(options) ){
-            if( options.length > 0){
-                var typ = typeof(options[0]);
-                var cnt = 0;
-                for( var o of options){
-                    if( typeof(o) == typ ){
-                        if(typ=='object' && ! Array.isArray(o) ){
-                            cnt+=1;
-                        }
-                    }
-                }
-                var valid_types = ['number', 'string','object'];
-                if(cnt == options.length){
-                    if( valid_types.includes(typ) ){
-                        if(typ == 'object'){
-                            if( props.fieldValue && props.fieldLabel  ){
-                                cnt = 0;
-                                for( var o of options){
-                                    var keys = Object.keys(o);
-                                    if( keys.includes(props.fieldValue) && keys.includes(props.fieldLabel) ){
-                                        cnt+=1;
-                                    }
-                                }
-                                if(cnt == options.length){
-                                    _valid.value = true;
-                                }
-                                else{
-                                    console.log("[Error] - Some of the options array values do not contain the keys specified in fieldValue and fieldLabel");
-                                }
-                            }
-                            else{
-                                console.log("[Error] - When options array values are objects, fieldValue and fieldLabel properties are required");
-                            }
-                        }
-                        else{
-                            _valid.value = true;
-                        }
-                    }
-                    else{
-                        console.log("[Error] - Options array values must be number, string or object");
-                    }
-                }
-                else{
-                    console.log("[Error] - Options array values have mixed types");
-                }
-            }
-            else{
-                console.log("[Error] - Provide a non empty array of options");
-            }
-        }
-        else{
-            console.log("[Error] - Options is not an array");
-        }
-    }
-    else{
-        console.log("[Error] - Options is empty");
-    }
-}
-
-validateInput()
+const _placeholder = ref("Search");
+const _isError = ref(false);
+const _validated = ref(false);
+const _showHelperText = ref(false);
 
 function _onChange(){
   _value.value = _selectedMany.value;
 
   if (props?.onChange) {
     props?.onChange(_value.value);
+
+    if (props.onValidate) {
+      if (props.validateWhen && props.validateWhen(_value.value)) {
+        _onValidate();
+      }
+    }
   }
 }
 
-watch(_selectedMany, value => {
+function _onValidate () {
+  if (props.onValidate && props.validate) {
+    let error = true;
+
+    if (props.validate(_value.value)) {
+      error = false;
+    }
+
+    props?.onValidate(error);
+
+    _showHelperText.value = error;
+    _validated.value = !error;
+    _isError.value = error;
+  }
+}
+
+function _onBlur (event: any) {
+  var val = _selectedMany.value;
+  
+  if (props.onBlur) {
+    props?.onBlur(val);
+  }
+
+  if (props.validateWithOnBlur) {
+    _onValidate();
+  }
+}
+
+/*watch(_selectedMany, value => {
     _onChange();
   }, {deep: true, immediate: true});
+*/
+onUpdated(() => {
+  _onChange();
+
+  if (props.validateOnUpdate) {
+    _onValidate();
+  }
+});
 
 onMounted(() => {
   _selectedMany.value = props.value ?? [];
-  
+  _placeholder.value = props.placeholder ?? _placeholder.value;
 });
 
 </script>
