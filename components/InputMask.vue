@@ -52,11 +52,11 @@
 </template>
 
 <script lang="ts" setup>
-  
+import { ref, onMounted, onUpdated, } from "vue";
+
 const props = defineProps<{
-    mask: string;
-    format: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  mask: string;
+  format: string;
   onChange?:(value: string, event: any) => void;
   id?: string;
   name?: string;
@@ -67,17 +67,13 @@ const props = defineProps<{
   disabled?: boolean;
   showHelperText?: boolean;
   helperText?: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onBlur?: (value: string, event: any) => void;
   validateWithOnBlur?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validateWhen?: (value: string) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validate?: (value: string) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onValidate?: (isError: boolean) => void;
   validateOnUpdate?: boolean;
-  }>();
+}>();
 
 const _element = ref(null);
 const _pattern = ref("");
@@ -86,12 +82,6 @@ const _value = ref("");
 const _isError = ref(false);
 const _showHelperText = ref(false);
 const _validated = ref(false);
-
-onMounted(() => {
-  _pattern.value = props.format;
-  _mask.value = props.mask;
-  _onChangeMask();
-});
 
 function _onValidate () {
   if (props.onValidate && props.validate) {
@@ -102,7 +92,7 @@ function _onValidate () {
     }
 
     props?.onValidate(error);
-    
+
     _validated.value = !error;
     _showHelperText.value = error;
     _isError.value = error;
@@ -110,7 +100,8 @@ function _onValidate () {
 }
 
 function _onChange (event: any) {
-  _value.value = event.target.value;
+  _onChangeMask();
+  _value.value = _element.value.value;
 
   if (props?.onChange) {
     props?.onChange(event.target.value, event);
@@ -132,20 +123,16 @@ function _onBlur (event: any) {
   }
 }
 
-onUpdated(() => {
-  _pattern.value = props.format;
-  _mask.value = props.mask;
-  _onChangeMask();
-});
-
 function doFormat(x: string, pattern: string, mask: string) {
-  var strippedValue = x.replace(/[^0-9]/g, "");
-  var chars = strippedValue.split('');
-  var count = 0;
+  let strippedValue = x.replace(/[^0-9]/g, "");
+  let chars = strippedValue.split("");
+  let count = 0;
 
-  var formatted = '';
-  for (var i=0; i<pattern.length; i++) {
+  let formatted = "";
+
+  for (let i=0; i<pattern.length; i++) {
     const c = pattern[i];
+
     if (chars[count]) {
       if (/\*/.test(c)) {
         formatted += chars[count];
@@ -154,26 +141,41 @@ function doFormat(x: string, pattern: string, mask: string) {
         formatted += c;
       }
     } else if (mask) {
-      if (mask.split('')[i])
-        formatted += mask.split('')[i];
+      if (mask.split("")[i])
+        formatted += mask.split("")[i];
     }
   }
+
   return formatted;
 }
 
 function _onChangeMask() {
-    var elem = _element.value;
-    const val = doFormat(elem.value, _pattern.value);
-    elem.value = doFormat(elem.value, _pattern.value, _mask.value );
-    
-    if (elem.createTextRange) {
-      var range = elem.createTextRange();
-      range.move('character', val.length);
-      range.select();
-    } else if (elem.selectionStart) {
-      elem.focus();
-      elem.setSelectionRange(val.length, val.length);
-    }
+  let elem = _element.value;
+  const val = doFormat(elem.value, _pattern.value);
+
+  elem.value = doFormat(elem.value, _pattern.value, _mask.value );
+
+  if (elem.createTextRange) {
+    let range = elem.createTextRange();
+
+    range.move("character", val.length);
+    range.select();
+  } else if (elem.selectionStart) {
+    elem.focus();
+    elem.setSelectionRange(val.length, val.length);
   }
+}
+
+onUpdated(() => {
+  _pattern.value = props.format;
+  _mask.value = props.mask;
+  //_onChangeMask();
+});
+
+onMounted(() => {
+  _pattern.value = props.format;
+  _mask.value = props.mask;
+  //_onChangeMask();
+});
 
 </script>
