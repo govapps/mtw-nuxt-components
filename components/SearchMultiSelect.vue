@@ -10,34 +10,29 @@
                   ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
                   `"
                 >
-                  
                   <ComboboxInput
                     class="block  w-full  rounded-md  border-0  py-1.5  text-gray-900  shadow-sm  ring-1  ring-inset  ring-gray-300  placeholder:text-gray-400  focus:ring-2  focus:ring-inset  focus:ring-primary-600  sm:text-sm  sm:leading-6"
                     @change="_query = $event.target.value"
                     :displayValue="(o) => o[fieldLabel]"
-                    v-show="hasSearch"
                     :placeholder="_placeholder"
-                    :open="true"
                     @blur="_onBlur();"
 
                   />
-                  
                   <ComboboxButton
                     class="absolute inset-y-0 right-0 flex items-center pr-2"
                   >
-                    
                     <ChevronUpDownIcon
                       class="h-5 w-5 text-gray-400"
                       aria-hidden="true"
                     />
                   </ComboboxButton>
-                </div>  
+                </div>
 
                  <TransitionRoot
                   leave="transition ease-in duration-100"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
-                  @after-leave="_query = ''; _onBlur();"
+                  @after-leave="_query = '';"
                 >
                   <ComboboxOptions
                     class=" absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
@@ -85,7 +80,7 @@
 
                 </TransitionRoot>
 
-                <ComboboxLabel class="mt-2"> 
+                <ComboboxLabel class="mt-2">
                   <slot />
                 </ComboboxLabel>
               </div>
@@ -97,51 +92,46 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed } from 'vue'
-  import {
-    Combobox,
-    ComboboxInput,
-    ComboboxLabel,
-    ComboboxButton,
-    ComboboxOptions,
-    ComboboxOption,
-    TransitionRoot,
-  } from '@headlessui/vue'
+import { ref, computed, onUpdated, onMounted, } from "vue";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxLabel,
+  ComboboxButton,
+  ComboboxOptions,
+  ComboboxOption,
+  TransitionRoot,
+} from "@headlessui/vue"
 
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import { CheckIcon, ChevronUpDownIcon, } from "@heroicons/vue/20/solid";
 
 const props = defineProps<{
-    options: Array;
+    options: Array< Object | string | number >;
     fieldLabel: string;
     fieldValue: string;
     value?: any;
-    hasSearch?: boolean;
     label?: string;
     onChange?: (value: any) => void;
     placeholder?: string;
     isError?: boolean;
     showHelperText?: boolean;
     helperText?: string;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onBlur?: (value: string, event: any) => void;
     validateWithOnBlur?: boolean;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     validateWhen?: (value: string) => boolean;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     validate?: (value: string) => boolean;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onValidate?: (isError: boolean) => void;
     validateOnUpdate?: boolean;
   }>();
 
 const _query = ref("");
 const _filteredOptions = computed(() =>
-    _query.value === ''
-      ? props.options
-      : props.options.filter((o) => {
-          return o[props.fieldLabel].toLowerCase().includes(_query.value.toLowerCase())
-        })
-  );
+  _query.value === ""
+    ? props.options
+    : props.options.filter((o) => {
+      return o[props.fieldLabel].toLowerCase().includes(_query.value.toLowerCase());
+    })
+);
 const _value = ref([]);
 const _selectedMany = ref([]);
 const _placeholder = ref("Search");
@@ -172,7 +162,6 @@ function _onValidate () {
     }
 
     props?.onValidate(error);
-
     _showHelperText.value = error;
     _validated.value = !error;
     _isError.value = error;
@@ -181,7 +170,7 @@ function _onValidate () {
 
 function _onBlur (event: any) {
   var val = _selectedMany.value;
-  
+
   if (props.onBlur) {
     props?.onBlur(val);
   }
@@ -191,10 +180,6 @@ function _onBlur (event: any) {
   }
 }
 
-/*watch(_selectedMany, value => {
-    _onChange();
-  }, {deep: true, immediate: true});
-*/
 onUpdated(() => {
   _onChange();
 
