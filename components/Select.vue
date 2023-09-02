@@ -2,7 +2,6 @@
   <div >
       <label class="text-left block text-sm font-medium leading-6 text-gray-900">{{ label }}</label>
       <div class="mt-2">
-        
           <select
             :id="id"
             :name="name"
@@ -23,8 +22,8 @@
               focus:ring-primary-600
               sm:text-sm
               sm:leading-6
-              ${isError && 'border-2 focus:ring-red-500 border-red-500 focus:border-red-500'}
-              ${isError && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
+              ${isError || _isError && 'border-2 focus:ring-red-400 border-red-400 focus:border-red-400'}
+              ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
               ${disabled ? 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200' : ''}
             `"
             :value="value"
@@ -32,7 +31,6 @@
             @blur="_onBlur($event)"
 
             :disabled="disabled"
-            v-show="_valid"
           >
             <option value="0" > Selecione uma opção </option>
             <option v-if="typeof (options[0]) == 'object'" v-for="o in options" :value="o[fieldValue]" > {{ o[fieldLabel] }} </option>
@@ -45,133 +43,39 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUpdated } from "vue";
+import { ref, onMounted, onUpdated, } from "vue";
 
 const _value = ref("");
 const _isError = ref(false);
+const _validated = ref(false);
 const _showHelperText = ref(false);
 const _valid = ref(false);
 
 const props = defineProps<{
-  options: Array;
+  options: Array< Object | number | string>;
   fieldLabel: string;
   fieldValue: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange?:(value: string, event: any) => void;
   id?: string;
   name?: string;
   value?: any;
   label?: string;
   placeholder?: string;
-  isError?: boolean;
   disabled?: boolean;
+  isError?: boolean;
   showHelperText?: boolean;
   helperText?: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onBlur?: (value: string, event: any) => void;
   validateWithOnBlur?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validateWhen?: (value: string) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validate?: (value: string) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onValidate?: (isError: boolean) => void;
   validateOnUpdate?: boolean;
 }>();
 
-function validateInput(){
-    _valid.value = false;
-
-    var flag = true;
-    if(props.value){
-      var valueType = typeof(props.value)
-      if(valueType!='number' && valueType!='string'){
-        flag = false;
-        console.log("[Error] - Invalid type for select tag value"); 
-      }
-    }
-
-    var options = props.options;
-    if( options && flag){
-        if( Array.isArray(options) ){
-            if( options.length > 0){
-                var typ = typeof(options[0]);
-                var cnt = 0;
-                for( var o of options){
-                    if( typeof(o) == typ ){
-                        if(typ=='object' && ! Array.isArray(o) ){
-                            cnt+=1;
-                        }
-                    }
-                }
-                var valid_types = ['number', 'string','object'];
-                if(cnt == options.length){
-                    if( valid_types.includes(typ) ){
-                        if(typ == 'object'){
-                            if( props.fieldValue && props.fieldLabel  ){
-                                cnt = 0;
-                                for( var o of options){
-                                    var keys = Object.keys(o);
-                                    if( keys.includes(props.fieldValue) && keys.includes(props.fieldLabel) ){
-                                        cnt+=1;
-                                    }
-                                }
-                                if(cnt == options.length){
-                                    _valid.value = true;
-                                }
-                                else{
-                                    console.log("[Error] - Some of the options array values do not contain the keys specified in fieldValue and fieldLabel");
-                                }
-                            }
-                            else{
-                                console.log("[Error] - When options array values are objects, fieldValue and fieldLabel properties are required");
-                            }
-                        }
-                        else{
-                            _valid.value = true;
-                        }
-                    }
-                    else{
-                        console.log("[Error] - Options array values must be number, string or object");
-                    }
-                }
-                else{
-                    console.log("[Error] - Options array values have mixed types");
-                }
-            }
-            else{
-                console.log("[Error] - Provide a non empty array of options");
-            }
-        }
-        else{
-            console.log("[Error] - Options is not an array");
-        }
-    }
-    else{
-        console.log("[Error] - Options is empty");
-    }
-}
-
-validateInput()
-
 onMounted(() => {
   _value.value = props.value;
 });
-
-function _onValidate () {
-  if (props.onValidate && props.validate) {
-    let error = true;
-
-    if (props.validate(_value.value)) {
-      error = false;
-    }
-
-    props?.onValidate(error);
-
-    _showHelperText.value = error;
-    _isError.value = error;
-  }
-}
 
 function _onChange (event: any) {
   _value.value = event.target.value;
@@ -187,13 +91,28 @@ function _onChange (event: any) {
   }
 }
 
+function _onValidate () {
+  if (props.onValidate && props.validate) {
+    let error = true;
+
+    if (props.validate(_value.value)) {
+      error = false;
+    }
+
+    props?.onValidate(error);
+
+    _showHelperText.value = error;
+    _validated.value = !error;
+    _isError.value = error;
+  }
+}
+
 function _onBlur (event: any) {
   if (props.onBlur) {
     props?.onBlur(event.target.value, event);
-
-    if (props.validateWithOnBlur) {
-      _onValidate();
-    }
+  }
+  if (props.validateWithOnBlur) {
+    _onValidate();
   }
 }
 
