@@ -31,7 +31,7 @@
                 > (current) </span>
               </a>
           </li>
-          
+
           <li v-show="_showNav">
             <a
               class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 "
@@ -50,17 +50,19 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted, onUpdated, watch, } from "vue";
+
 import { ExclamationTriangleIcon, ExclamationCircleIcon, CheckCircleIcon, } from "@heroicons/vue/24/outline";
 
 const props = defineProps<{
-    total: number;
-    perPage: number;
-    maxShowPages?: number;
-    showPrevNext?: boolean;
-    labelPrev?: string;
-    labelNext?: string;
-    onPageChange?: (pageNumber: number) => void;
-  }>();
+  total: number;
+  perPage: number;
+  maxShowPages?: number;
+  showPrevNext?: boolean;
+  labelPrev?: string;
+  labelNext?: string;
+  onPageChange?: (pageNumber: number) => void;
+}>();
 
 const _current = ref(1);
 const _perPage = ref(20);
@@ -80,33 +82,33 @@ function _onClick (event: any, page: number) {
   }
 }
 
- if(props.total){
-    _total.value = props.total;
-  }
-
 function checkInput() {
-    if(props.showPrevNext){
-      _showNav.value = props.showPrevNext;
+  if(props.showPrevNext){
+    _showNav.value = props.showPrevNext;
+  }
+  if(props.perPage){
+    _perPage.value = props.perPage;
+  }
+  if( _total.value > _perPage.value ){
+    _max.value = Math.ceil(_total.value / _perPage.value);
+    let pages = [];
+
+    for(let i = 1; i <= _max.value; i++){
+      pages.push(i);
     }
-    if(props.perPage){
-      _perPage.value = props.perPage;
-    }
-    if( _total.value > _perPage.value ){
-        _max.value = Math.ceil(_total.value / _perPage.value);
-        var pages = [];
-        for(var i = 1; i <= _max.value; i++){
-          pages.push(i);
-        }
-        _listPages.value = pages;
-        _valid.value = true;
-    }
+    _listPages.value = pages;
+    _valid.value = true;
+  }
 }
 
 watch(_total, value => {
-    checkInput();
-  }, {deep: true, immediate: true});
+  checkInput();
+}, { deep: true, immediate: true } );
 
 onMounted(() => {
+  if(props.total){
+    _total.value = props.total;
+  }
   checkInput();
 });
 
