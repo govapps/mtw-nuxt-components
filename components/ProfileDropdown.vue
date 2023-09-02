@@ -4,7 +4,7 @@
             <Menu as="div" class="relative">
               <MenuButton class="-m-1.5 flex items-center p-1.5">
                 <UserCircleIcon class="h-8 w-8 text-gray-400"/>
-                
+
                 <span class="hidden lg:flex lg:items-center">
                   <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{ _welcomeMessage }}</span>
                   <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -17,7 +17,7 @@
 
                   <MenuItem v-for="item in _items" :key="item.name" v-slot="{ active }">
                     <a @click="item?.onClick()" :href="item.link" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{ item.name }}</a>
-                  
+
                   </MenuItem>
 
                 </MenuItems>
@@ -28,19 +28,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUpdated } from "vue";
+import { ref, onMounted, onUpdated, } from "vue";
 
 import {
   Menu,
   MenuButton,
   MenuItem,
-  MenuItems
+  MenuItems,
 } from "@headlessui/vue";
 
 import { ChevronDownIcon, UserCircleIcon, } from "@heroicons/vue/20/solid";
 
 const _items = ref([]);
-const _welcomeMessage = ref("")
+const _welcomeMessage = ref("");
 
 const props = defineProps<{
   userNavigation: Array; // Expects array of objects containing link, name current and icon
