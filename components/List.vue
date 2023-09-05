@@ -50,7 +50,6 @@
 </template>
 
 <script lang="ts" setup>
-// import { PaperClipIcon, } from "@heroicons/vue/20/solid";
 
 export interface ItemList<T = any> {
   title: string;
