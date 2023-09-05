@@ -8,10 +8,7 @@
       <component
         :is="variant ?? 'input'"
         :id="id"
-        :ref="(el: any) => {
-          if(el && blockPaste) el.onpaste = (e: Event) => e.preventDefault();
-          if(el && blockCopy) el.oncopy = (e: Event) => e.preventDefault();
-        }"
+        :ref="_onRef"
         :name="name"
         :type="type ?? 'text'"
         :placeholder="placeholder"
@@ -126,6 +123,12 @@ function _onBlur (event: any) {
   if (props.validateWithOnBlur) {
     _onValidate();
   }
+}
+
+function _onRef (el: any) {
+  if (el && props.blockPaste) { el.onpaste = (e: Event) => e.preventDefault(); }
+  if (el && props.blockCopy) { el.oncopy = (e: Event) => e.preventDefault(); }
+  if (el && props.blockCopy) { el.oncut = (e: Event) => e.preventDefault(); }
 }
 
 onUpdated(() => {
