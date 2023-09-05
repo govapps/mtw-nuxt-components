@@ -73,15 +73,9 @@
 import { XMarkIcon, } from "@heroicons/vue/24/outline";
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot, } from "@headlessui/vue";
 
-defineProps({
-  onClose: {
-    default: () => null,
-    type: Function
-  },
-  isOpen: {
-    default: false,
-    type: Boolean
-  }
-});
+defineProps<{
+  onClose:() => void;
+  isOpen: boolean;
+}>();
 
 </script>

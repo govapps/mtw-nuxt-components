@@ -41,23 +41,11 @@
 <script lang="ts" setup>
 import { ChevronRightIcon, } from "@heroicons/vue/20/solid";
 
-defineProps({
-  title: {
-    type: String,
-    default: "Title"
-  },
-  subtitle: {
-    type: String,
-    default: "Subtitle"
-  },
-  complement: {
-    type: String,
-    default: "Complement"
-  },
-  description: {
-    type: String,
-    default: "Description"
-  }
-});
+defineProps<{
+  title: string;
+  subtitle?: string;
+  complement?: string;
+  description?: string;
+}>();
 
 </script>
