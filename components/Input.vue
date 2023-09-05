@@ -1,6 +1,9 @@
 <template>
   <div>
-    <label class="text-left block text-sm font-medium leading-6 text-gray-900">{{ label }}</label>
+    <label class="text-left block text-sm font-medium leading-6 text-gray-900">
+      {{ label }}
+    </label>
+
     <div class="mt-2">
       <component
         :is="variant ?? 'input'"
@@ -37,7 +40,6 @@
         :disabled="disabled"
 
         @input="_onChange($event)"
-
         @blur="_onBlur($event)"
       />
 
