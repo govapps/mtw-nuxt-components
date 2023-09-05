@@ -63,8 +63,6 @@ const _showHelperText = ref(false);
 const _validated = ref(false);
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onChange?:(value: string, event: any) => void;
   variant?: string;
   id?: string;
   name?: string;
@@ -76,18 +74,15 @@ const props = defineProps<{
   disabled?: boolean;
   showHelperText?: boolean;
   helperText?: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onBlur?: (value: string, event: any) => void;
   validateWithOnBlur?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  validateWhen?: (value: string) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  validate?: (value: string) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onValidate?: (isError: boolean) => void;
   validateOnUpdate?: boolean;
   blockPaste?: boolean;
   blockCopy?: boolean;
+  onBlur?:(value: string, event: any) => void;
+  onChange?:(value: string, event: any) => void;
+  validate?: (value: string) => boolean;
+  onValidate?: (isError: boolean) => void;
+  validateWhen?: (value: string) => boolean;
 }>();
 
 onMounted(() => {
