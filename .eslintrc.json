@@ -9,6 +9,8 @@
     "@nuxtjs/eslint-config-typescript"
   ],
   "rules": {
+    "@typescript-eslint/no-explicit-any": ["error"],
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "object-shorthand": "error",
     "vue/multi-word-component-names": "off",
     "vue/no-multiple-template-root": "off" ,
@@ -134,5 +136,13 @@
       "filter": true,
       "interpolationAsNonHTML": false
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["components/Input.vue", "components/List.vue"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": ["off"]
+      }
+    }
+  ]
 }
