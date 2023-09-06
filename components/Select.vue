@@ -26,7 +26,7 @@
               ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
               ${disabled ? 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200' : ''}
             `"
-            :value="value"
+            :value="_value"
             @change="_onChange($event)"
             @blur="_onBlur($event)"
 
@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUpdated, } from "vue";
 
-const _value = ref("");
+const _value = ref(0);
 const _isError = ref(false);
 const _validated = ref(false);
 const _showHelperText = ref(false);
@@ -74,7 +74,7 @@ const props = defineProps<{
 }>();
 
 onMounted(() => {
-  _value.value = props.value;
+  _value.value = props.value ?? 0;
 });
 
 function _onChange (event: any) {
@@ -117,6 +117,7 @@ function _onBlur (event: any) {
 }
 
 onUpdated(() => {
+  _value.value = props.value ?? 0;
   if (props.validateOnUpdate) {
     _onValidate();
   }
