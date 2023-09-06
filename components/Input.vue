@@ -33,7 +33,7 @@
           ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
           ${disabled ? 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200' : ''}
         `"
-        :value="_value"
+        :value="value"
         :disabled="disabled"
 
         @input="_onChange($event)"
@@ -89,6 +89,7 @@ onMounted(() => {
 function _onValidate () {
   if (props.onValidate && props.validate) {
     let error = true;
+
     if (props.validate(_value.value)) {
       error = false;
     }
@@ -131,10 +132,6 @@ function _onRef (el: any) {
 }
 
 onUpdated(() => {
-  if(props.value){
-    _value.value = props.value ?? "";
-  }
-
   if (props.validateOnUpdate) {
     _onValidate();
   }
