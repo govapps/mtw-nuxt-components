@@ -27,15 +27,15 @@
           ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
           ${disabled ? 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200' : ''}
         `"
-        :value="value"
+        :value="_value"
         :disabled="disabled"
 
         @input="_onChange($event)"
 
         @blur="_onBlur($event)"
 
-        ref="_element" 
-        @keyup="_onChangeMask" 
+        ref="_element"
+        @keyup="_onChangeMask"
         @keydown="_onChangeMask"
       />
 
@@ -169,12 +169,20 @@ function _onChangeMask() {
 onUpdated(() => {
   _pattern.value = props.format;
   _mask.value = props.mask;
+  if(props.value){
+    _value.value = props.value;
+  }
+  if (props.validateOnUpdate) {
+    _onChangeMask();
+    _onValidate();
+  }
   //_onChangeMask();
 });
 
 onMounted(() => {
   _pattern.value = props.format;
   _mask.value = props.mask;
+  _value.value = props.value ?? "";
   //_onChangeMask();
 });
 
