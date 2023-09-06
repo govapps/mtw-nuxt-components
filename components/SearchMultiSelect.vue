@@ -32,7 +32,7 @@
                   leave="transition ease-in duration-100"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
-                  @after-leave="_query = '';"
+                  @after-leave="_query = ''; "
                 >
                   <ComboboxOptions
                     class=" absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
@@ -45,12 +45,13 @@
                       Nada encontrado
                     </div>
 
-                    <ComboboxOption 
-                    v-for="o in _filteredOptions" 
-                    :key="o[fieldValue]" 
-                    :value="o" 
+                    <ComboboxOption
+                    v-for="o in _filteredOptions"
+                    :key="o[fieldValue]"
+                    :value="o"
                       as="template"
                       v-slot="{ selected, active }"
+                      @click="_onChange();"
                     >
                       <li
                         class="relative cursor-default select-none py-2 pl-10 pr-4"
@@ -109,7 +110,7 @@ const props = defineProps<{
     options: Array< Object | string | number >;
     fieldLabel: string;
     fieldValue: string;
-    value?: any;
+    value?: Array< Object | string | number >;
     label?: string;
     onChange?: (value: any) => void;
     placeholder?: string;
@@ -118,7 +119,6 @@ const props = defineProps<{
     helperText?: string;
     onBlur?: (value: string, event: any) => void;
     validateWithOnBlur?: boolean;
-    validateWhen?: (value: string) => boolean;
     validate?: (value: string) => boolean;
     onValidate?: (isError: boolean) => void;
     validateOnUpdate?: boolean;
@@ -133,22 +133,18 @@ const _filteredOptions = computed(() =>
     })
 );
 const _value = ref([]);
-const _selectedMany = ref([]);
+const _selectedMany = ref( );
 const _placeholder = ref("Search");
 const _isError = ref(false);
 const _validated = ref(false);
 const _showHelperText = ref(false);
 
 function _onChange(){
-  _value.value = _selectedMany.value;
-
   if (props?.onChange) {
-    props?.onChange(_value.value);
+    props?.onChange(_selectedMany.value);
 
     if (props.onValidate) {
-      if (props.validateWhen && props.validateWhen(_value.value)) {
-        _onValidate();
-      }
+      _onValidate();
     }
   }
 }
@@ -157,11 +153,11 @@ function _onValidate () {
   if (props.onValidate && props.validate) {
     let error = true;
 
-    if (props.validate(_value.value)) {
+    if (props.validate(_selectedMany.value)) {
       error = false;
     }
-
     props?.onValidate(error);
+
     _showHelperText.value = error;
     _validated.value = !error;
     _isError.value = error;
@@ -181,8 +177,6 @@ function _onBlur (event: any) {
 }
 
 onUpdated(() => {
-  _onChange();
-
   if (props.validateOnUpdate) {
     _onValidate();
   }
