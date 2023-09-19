@@ -40,21 +40,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, } from "vue";
+import { ref, onUpdated, } from "vue";
 import { Switch, } from "@headlessui/vue";
 
 const props = defineProps<{
   value?: boolean,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange?:(value: boolean) => void,
 }>();
 
-const enabled = ref(!!(props.value));
+const enabled = ref(false);
 
 const onChange = () => {
   enabled.value = !enabled.value;
 
   if (props.onChange) { props.onChange(enabled.value); }
 };
+
+onUpdated( () => {
+  enabled.value = props.value ?? false;
+});
 
 </script>
