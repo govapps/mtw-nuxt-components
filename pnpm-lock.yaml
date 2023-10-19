@@ -23,9 +23,6 @@ dependencies:
   reflect-metadata:
     specifier: ^0.1.13
     version: 0.1.13
-  validations-br:
-    specifier: ^1.3.0
-    version: 1.3.0
 
 devDependencies:
   '@babel/eslint-parser':
@@ -7603,10 +7600,6 @@ packages:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
     dev: true
-
-  /validations-br@1.3.0:
-    resolution: {integrity: sha512-H6sNgcqiPDlSEJOtORjzg7XlMahlrl0lGhK2VGj1TjqBWO0+hxIr+8+77xBKCbEZMqsaeMrGHUvQwQTloI9RAg==}
-    dev: false
 
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}

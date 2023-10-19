@@ -8,7 +8,7 @@
 
 <img src="assets/images/mtw-components-cover.png"/>
 
-Welcome to the Nuxt.js Component Repository! This repository contains a collection of reusable components that can be integrated into Nuxt.js projects to accelerate development and maintain design consistency throughout the application.
+Welcome to the `MTW Nuxt Components` repository! This repository contains a collection of reusable components that can be integrated into Nuxt.js projects to accelerate development and maintain design consistency throughout the application.
 
 See the components documentation on the [Wiki](https://github.com/govapps/mtw-nuxt-components/wiki)
 
@@ -17,7 +17,11 @@ See the components documentation on the [Wiki](https://github.com/govapps/mtw-nu
 ### 1. Add in nuxt project with tailwind
 
 ``` bash
+# last version
 pnpm add govapps/mtw-nuxt-components
+
+# another version, exemple install version 1.0.1
+pnpm add mtw-nuxt-components#semver:1.0.1
 ```
 
 ### 2. Add config in file `nuxt.config.ts`
