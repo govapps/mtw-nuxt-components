@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="text-left block text-sm font-medium leading-6 text-gray-900">
+    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
       {{ label }}
     </label>
 
