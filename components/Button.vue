@@ -18,9 +18,7 @@
       font-medium
       lg:px-8
       xl:px-10
-      bg-primary
-      text-white
-      rounded-md
+      ${_styleButton}
       ${!disabled ? 'hover:bg-opacity-90': '!bg-[#EFF4FB] !text-[#64748B]'}
       ${hasIcon ? 'inline-flex' : ''}
       ${isWidthFull ? 'w-full' : ''}
@@ -36,6 +34,8 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted, ref, } from "vue";
+
 const props = defineProps<{
   disabled?: boolean;
   secondary?: boolean;
@@ -44,7 +44,10 @@ const props = defineProps<{
   isWidthFull?: boolean;
   loadingSize?: "sm" | "md" | "lg";
   type?: "button" | "submit" | "reset";
+  styleButton?: "rounded" | "roundedFull" | "outlineRounded"
 }>();
+
+const _styleButton = ref("bg-primary text-white rounded-md");
 
 const params = () => {
   if (props.disabled) {
@@ -54,4 +57,14 @@ const params = () => {
   return "";
 };
 
+onMounted(() => {
+  switch (props.styleButton) {
+  case "roundedFull":
+    _styleButton.value = "bg-primary text-white rounded-full";
+    break;
+  case "outlineRounded":
+    _styleButton.value = "border border-primary text-primary rounded-md";
+    break;
+  }
+});
 </script>
