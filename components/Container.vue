@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto sm:px-6 lg:px-8">
+  <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <slot />
   </div>
 </template>
