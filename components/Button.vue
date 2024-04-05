@@ -8,19 +8,18 @@
   <button
     v-else
     :class="`
-      m-1
-      px-3
-      py-2
-      text-sm
-      shadow-sm
-      rounded-md
-      font-semibold
-      hover:bg-primary-500
-      focus-visible:outline
-      focus-visible:outline-2
-      focus-visible:outline-offset-2
-      items-center gap-x-2
-      focus-visible:outline-primary-600
+      inline-flex
+      items-center
+      justify-center
+      gap-2.5
+      py-4
+      px-10
+      text-center
+      font-medium
+      lg:px-8
+      xl:px-10
+      ${_styleButton}
+      ${!disabled ? 'hover:bg-opacity-90': '!bg-[#EFF4FB] !text-[#64748B]'}
       ${hasIcon ? 'inline-flex' : ''}
       ${isWidthFull ? 'w-full' : ''}
       ${!secondary ? 'bg-primary-600 text-white' : ''}
@@ -35,6 +34,8 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted, ref, } from "vue";
+
 const props = defineProps<{
   disabled?: boolean;
   secondary?: boolean;
@@ -43,7 +44,10 @@ const props = defineProps<{
   isWidthFull?: boolean;
   loadingSize?: "sm" | "md" | "lg";
   type?: "button" | "submit" | "reset";
+  styleButton?: "rounded" | "roundedFull" | "outlineRounded"
 }>();
+
+const _styleButton = ref("bg-primary text-white rounded-md");
 
 const params = () => {
   if (props.disabled) {
@@ -53,4 +57,14 @@ const params = () => {
   return "";
 };
 
+onMounted(() => {
+  switch (props.styleButton) {
+  case "roundedFull":
+    _styleButton.value = "bg-primary text-white rounded-full";
+    break;
+  case "outlineRounded":
+    _styleButton.value = "border border-primary text-primary rounded-md";
+    break;
+  }
+});
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="text-left block text-sm font-medium leading-6 text-gray-900">
+    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
       {{ label }}
     </label>
 
@@ -13,29 +13,30 @@
         :type="type ?? 'text'"
         :placeholder="placeholder"
         :class="`
-          block
           w-full
-          rounded-md
-          border-0
-          py-1.5
-          text-gray-900
-          shadow-sm
-          ring-1
-          ring-inset
-          ring-gray-300
-          placeholder:text-gray-400
-          focus:ring-2
-          focus:ring-inset
-          focus:ring-primary-600
-          sm:text-sm
-          sm:leading-6
-          ${isError || _isError && 'border-2 focus:ring-red-400 border-red-400 focus:border-red-400'}
-          ${_validated && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
-          ${disabled ? 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200' : ''}
+          rounded-lg
+          border-[1.5px]
+          text-black
+          border-stroke
+          bg-transparent
+          py-3
+          px-5
+          font-normal
+          outline-none
+          transition
+          focus:border-primary
+          active:border-primary
+
+          dark:text-white
+          dark:border-form-strokedark
+          dark:bg-form-input
+          dark:focus:border-primary
+          ${isError || _isError && 'border-[1.5px] dark:border-danger focus:ring-danger border-danger focus:border-danger'}
+          ${_validated && 'border-[1.5px] focus:ring-success border-success'}
+          ${disabled ? 'disabled:cursor-not-allowed disabled:bg-whiter disabled:text-[#a7a7a7] disabled:ring-gray-3 dark:disabled:bg-black' : ''}
         `"
         :value="value"
         :disabled="disabled"
-
         @input="_onChange($event)"
         @blur="_onBlur($event)"
       />
@@ -43,7 +44,7 @@
       <p
         v-if="showHelperText || _showHelperText"
         class="text-sm mt-1"
-        :class="{'text-red-500': isError || _isError}"
+        :class="{'text-red': isError || _isError}"
       >
         {{ helperText }}
       </p>
