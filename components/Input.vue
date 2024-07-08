@@ -31,8 +31,8 @@
           dark:border-form-strokedark
           dark:bg-form-input
           dark:focus:border-primary
-          ${isError || _isError && 'border-[1.5px] dark:border-danger focus:ring-danger border-danger focus:border-danger'}
-          ${_validated && 'border-[1.5px] focus:ring-success border-success'}
+            ${isError || _isError && 'border-[1.5px] dark:!border-danger focus:!ring-danger !border-danger focus:!border-danger'}
+            ${_validated && 'border-[1.5px] focus:!ring-success !border-success'}
           ${disabled ? 'disabled:cursor-not-allowed disabled:bg-whiter disabled:text-[#a7a7a7] disabled:ring-gray-3 dark:disabled:bg-black' : ''}
         `"
         :value="value"
@@ -46,19 +46,23 @@
         class="text-sm mt-1"
         :class="{'text-red': isError || _isError}"
       >
-        {{ helperText }}
+    {{ validates ? _helperText : helperText }}
       </p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUpdated, } from "vue";
+export interface Validation {
+  validate?: (value: string) => boolean;
+  message?: string;
+}
 
 const _value = ref("");
 const _isError = ref(false);
 const _showHelperText = ref(false);
 const _validated = ref(false);
+const _helperText = ref("");
 
 const props = defineProps<{
   variant?: string;
@@ -77,8 +81,9 @@ const props = defineProps<{
   blockPaste?: boolean;
   blockCopy?: boolean;
   onBlur?:(value: string, event: any) => void;
-  onChange?:(value: string, event: any) => void;
-  validate?: (value: string) => boolean;
+  onChange?: (value: string, event: any) => void;
+  validate?: (value: string) => boolean ;
+  validates?: Validation[];
   onValidate?: (isError: boolean) => void;
   validateWhen?: (value: string) => boolean;
 }>();
@@ -88,18 +93,35 @@ onMounted(() => {
 });
 
 function _onValidate () {
-  if (props.onValidate && props.validate) {
-    let error = true;
+  if (props.onValidate && (props.validate || Array.isArray(props.validates))) {
+    let error = false;
+    let helperText = "";
+    let hasError = false;
 
-    if (props.validate(_value.value)) {
-      error = false;
+    if (props.validates && Array.isArray(props.validates)) {
+      const validations = props.validates;
+
+      for (let i = 0; i < validations.length; i++) {
+        if (validations[i].validate && !validations[i]?.validate?.(_value.value) && !hasError) {
+          error = true;
+          hasError = true;
+          helperText = validations[i].message ?? "";
+        }
+      }
+    } else if (props.validate && !props.validate(_value.value)) {
+      error = true;
     }
 
     props?.onValidate(error);
-
     _validated.value = !error;
     _showHelperText.value = error;
+
     _isError.value = error;
+    if (hasError) {
+      _helperText.value = helperText;
+    } else {
+      _helperText.value = "";
+    }
   }
 }
 
