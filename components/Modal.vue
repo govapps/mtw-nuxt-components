@@ -6,7 +6,7 @@
     <Dialog
       as="div"
       class="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5"
-      @close="onClose()"
+      @close="!clickOutSideOff && onClose()"
     >
       <TransitionChild
         as="template"
@@ -62,6 +62,7 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot, } fr
 defineProps<{
   onClose:() => void;
   isOpen: boolean;
+  clickOutSideOff?: boolean;
   hasIcon?: boolean;
 }>();
 
