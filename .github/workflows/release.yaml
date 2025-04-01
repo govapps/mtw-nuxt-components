@@ -1,0 +1,30 @@
+name: NodeJS package
+
+on:
+  release:
+    types: [created]
+    
+permissions: 
+  contents: write
+  pull-requests: write
+  packages: write
+jobs:
+  publish-package:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      packages: write
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18
+          registry-url: http://npm.pkg.github.com/
+          scope: "@govapps"
+      - run: npm install
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          
