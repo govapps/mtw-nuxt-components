@@ -6,43 +6,43 @@ export default class FormValidate {
 
   errors: ValidateI[] = [];
 
-  constructor(inputValidate: InputValidate[]){
+  constructor (inputValidate: InputValidate[]) {
     this.inputValidate = inputValidate;
   }
 
-  getInputValidate(name: string){
+  getInputValidate (name: string) {
     return this.inputValidate.find(i => i.name === name);
   }
 
-  validate(){
+  validate () {
     this.inputValidate.forEach(i => i.validate());
     this.retiveErros();
   }
 
-  setValue(name: string, value: string){
+  setValue (name: string, value: string) {
     this.inputValidate
       .find(i => i.name === name)
       ?.setValue(value);
   }
 
-  retiveErros(){
+  retiveErros () {
     this.errors = [];
 
-    this.inputValidate.forEach(input => {
-      if(input.errors.length){
+    this.inputValidate.forEach((input) => {
+      if (input.errors.length) {
         this.errors = [...this.errors, ...input.errors];
       }
     });
   }
 
-  hasError(){
+  hasError () {
     return this.errors.length > 0;
   }
 
-  getData(){
+  getData () {
     const data = {} as Record<string, unknown>;
 
-    this.inputValidate.forEach(input => {
+    this.inputValidate.forEach((input) => {
       data[input.name] = input.getFormatedValue();
     });
 

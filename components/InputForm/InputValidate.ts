@@ -9,35 +9,34 @@ export default class InputValidate {
 
   readonly validations: ValidateI[];
 
-  constructor(inputValidate: InputValidateI){
+  constructor (inputValidate: InputValidateI) {
     this.name = inputValidate.name;
     this.format = inputValidate.format;
     this.validations = inputValidate.validations ?? [];
   }
 
-  setValue(value: string){
+  setValue (value: string) {
     this.value = value;
   }
 
-  getFormatedValue(){
-    if(this.format){
+  getFormatedValue () {
+    if (this.format) {
       return this.format(this.value);
     }
 
     return this.value;
   }
 
-  validate(){
+  validate () {
     this.errors = [];
-
     this.validations.forEach((validation) => {
-      if(!validation.validate(this.value)){
+      if (!validation.validate(this.value)) {
         this.errors.push(validation);
       }
     });
   }
 
-  hasError(){
+  hasError () {
     return this.errors.length > 0;
   }
 }
