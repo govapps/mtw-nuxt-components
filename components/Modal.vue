@@ -6,7 +6,7 @@
     <Dialog
       as="div"
       class="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5"
-      @close="onClose()"
+      @close="!clickOutSideOff && onClose()"
     >
       <TransitionChild
         as="template"
@@ -31,7 +31,7 @@
             leave-from="opacity-100 translate-y-0 sm:scale-100"
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <DialogPanel class="w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5">
+            <DialogPanel :class="`w-full ${ size ? size : 'max-w-142.5' } rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5`">
               <span v-if="hasIcon" class="mx-auto inline-block">
                 <slot name="icon" />
               </span>
@@ -62,7 +62,9 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot, } fr
 defineProps<{
   onClose:() => void;
   isOpen: boolean;
+  clickOutSideOff?: boolean;
   hasIcon?: boolean;
+  size?: string;
 }>();
 
 </script>
