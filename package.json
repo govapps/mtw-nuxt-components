@@ -1,6 +1,6 @@
 {
   "name": "mtw-nuxt-components",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "private": true,
   "engines": {
     "node": ">=16.16.0 <=18.20.6",
