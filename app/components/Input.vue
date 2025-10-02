@@ -34,9 +34,9 @@
         dark:border-form-strokedark
         dark:bg-form-input
         dark:focus:border-primary
-        ${isError || _isError && 'border-[1.5px] dark:!border-danger focus:!ring-danger !border-danger focus:!border-danger'}
-        ${_validated && 'border-[1.5px] focus:!ring-success !border-success'}
-        ${disabled ? 'disabled:cursor-not-allowed disabled:bg-whiter disabled:text-[#a7a7a7] disabled:ring-gray-3 dark:disabled:bg-black' : ''}
+        ${isError || _isError && 'border-[1.5px] dark:!border-danger focus:!border-danger !border-danger'}
+        ${_validated && 'border-[1.5px] focus:!border-success !border-success'}
+        ${disabled ? 'disabled:cursor-not-allowed disabled:bg-whiter disabled:text-[#a7a7a7] dark:disabled:bg-black' : ''}
       `"
       :value="value"
       :disabled="disabled"
