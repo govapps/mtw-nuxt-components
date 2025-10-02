@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+@theme {
+  /* Custom Colors */
+  --color-primary: #3C50E0;
+  --color-secondary: #80CAEE;
+  --color-black: #1C2434;
+  --color-black-2: #010101;
+  --color-red: #FB5454;
+  --color-body: #64748B;
+  --color-bodydark: #AEB7C0;
+  --color-bodydark1: #DEE4EE;
+  --color-bodydark2: #8A99AF;
+  --color-stroke: #E2E8F0;
+  --color-gray: #EFF4FB;
+  --color-graydark: #333A48;
+  --color-gray-2: #F7F9FC;
+  --color-gray-3: #FAFAFA;
+  --color-whiten: #F1F5F9;
+  --color-whiter: #F5F7FD;
+  --color-boxdark: #24303F;
+  --color-boxdark-2: #1A222C;
+  --color-strokedark: #2E3A47;
+  --color-form-strokedark: #3d4d60;
+  --color-form-input: #1d2a39;
+  --color-success: #219653;
+  --color-danger: #D34053;
+  --color-warning: #FFA70B;
+  
+  /* Meta Colors */
+  --color-meta-1: #DC3545;
+  --color-meta-2: #EFF2F7;
+  --color-meta-3: #10B981;
+  --color-meta-4: #313D4A;
+  --color-meta-5: #259AE6;
+  --color-meta-6: #FFBA00;
+  --color-meta-7: #FF6766;
+  --color-meta-8: #F0950C;
+  --color-meta-9: #E5E7EB;
+  --color-meta-10: #0FADCF;
+
+  /* Font Family */
+  --font-family-satoshi: Satoshi, sans-serif;
+
+  /* Screens */
+  --breakpoint-2xsm: 375px;
+  --breakpoint-xsm: 425px;
+  --breakpoint-3xl: 2000px;
+
+  /* Font Sizes */
+  --font-size-title-xxl: 44px;
+  --line-height-title-xxl: 55px;
+  --font-size-title-xxl2: 42px;
+  --line-height-title-xxl2: 58px;
+  --font-size-title-xl: 36px;
+  --line-height-title-xl: 45px;
+  --font-size-title-xl2: 33px;
+  --line-height-title-xl2: 45px;
+  --font-size-title-lg: 28px;
+  --line-height-title-lg: 35px;
+  --font-size-title-md: 24px;
+  --line-height-title-md: 30px;
+  --font-size-title-md2: 26px;
+  --line-height-title-md2: 30px;
+  --font-size-title-sm: 20px;
+  --line-height-title-sm: 26px;
+  --font-size-title-sm2: 22px;
+  --line-height-title-sm2: 28px;
+  --font-size-title-xsm: 18px;
+  --line-height-title-xsm: 24px;
+
+  /* Custom Spacing */
+  --spacing-4_5: 1.125rem;
+  --spacing-5_5: 1.375rem;
+  --spacing-6_5: 1.625rem;
+  --spacing-7_5: 1.875rem;
+  --spacing-8_5: 2.125rem;
+  --spacing-9_5: 2.375rem;
+  --spacing-10_5: 2.625rem;
+  --spacing-11: 2.75rem;
+  --spacing-11_5: 2.875rem;
+  --spacing-12_5: 3.125rem;
+  --spacing-13: 3.25rem;
+  --spacing-13_5: 3.375rem;
+  --spacing-14: 3.5rem;
+  --spacing-14_5: 3.625rem;
+  --spacing-15: 3.75rem;
+  --spacing-15_5: 3.875rem;
+  --spacing-16: 4rem;
+  --spacing-16_5: 4.125rem;
+  --spacing-17: 4.25rem;
+  --spacing-17_5: 4.375rem;
+  --spacing-18: 4.5rem;
+  --spacing-18_5: 4.625rem;
+  --spacing-19: 4.75rem;
+  --spacing-19_5: 4.875rem;
+  --spacing-21: 5.25rem;
+  --spacing-21_5: 5.375rem;
+  --spacing-22: 5.5rem;
+  --spacing-22_5: 5.625rem;
+  --spacing-24_5: 6.125rem;
+  --spacing-25: 6.25rem;
+  --spacing-25_5: 6.375rem;
+  --spacing-26: 6.5rem;
+  --spacing-27: 6.75rem;
+  --spacing-27_5: 6.875rem;
+  --spacing-29: 7.25rem;
+  --spacing-29_5: 7.375rem;
+  --spacing-30: 7.5rem;
+  --spacing-31: 7.75rem;
+  --spacing-32_5: 8.125rem;
+  --spacing-33: 8.25rem;
+  --spacing-34: 8.5rem;
+  --spacing-34_5: 8.625rem;
+  --spacing-35: 8.75rem;
+  --spacing-36_5: 9.125rem;
+  --spacing-37_5: 9.375rem;
+  --spacing-39: 9.75rem;
+  --spacing-39_5: 9.875rem;
+  --spacing-40: 10rem;
+  --spacing-42_5: 10.625rem;
+  --spacing-44: 11rem;
+  --spacing-45: 11.25rem;
+  --spacing-46: 11.5rem;
+  --spacing-47_5: 11.875rem;
+  --spacing-49: 12.25rem;
+  --spacing-50: 12.5rem;
+  --spacing-52: 13rem;
+  --spacing-52_5: 13.125rem;
+  --spacing-54: 13.5rem;
+  --spacing-54_5: 13.625rem;
+  --spacing-55: 13.75rem;
+  --spacing-55_5: 13.875rem;
+  --spacing-59: 14.75rem;
+  --spacing-60: 15rem;
+  --spacing-62_5: 15.625rem;
+  --spacing-65: 16.25rem;
+  --spacing-67: 16.75rem;
+  --spacing-67_5: 16.875rem;
+  --spacing-70: 17.5rem;
+  --spacing-72_5: 18.125rem;
+  --spacing-73: 18.25rem;
+  --spacing-75: 18.75rem;
+  --spacing-90: 22.5rem;
+  --spacing-94: 23.5rem;
+  --spacing-95: 23.75rem;
+  --spacing-100: 25rem;
+  --spacing-115: 28.75rem;
+  --spacing-125: 31.25rem;
+  --spacing-132_5: 33.125rem;
+  --spacing-150: 37.5rem;
+  --spacing-171_5: 42.875rem;
+  --spacing-180: 45rem;
+  --spacing-187_5: 46.875rem;
+  --spacing-203: 50.75rem;
+  --spacing-230: 57.5rem;
+  --spacing-242_5: 60.625rem;
+
+  /* Z-Index */
+  --z-index-1: 1;
+  --z-index-9: 9;
+  --z-index-99: 99;
+  --z-index-999: 999;
+  --z-index-9999: 9999;
+  --z-index-99999: 99999;
+  --z-index-999999: 999999;
+
+  /* Box Shadow */
+  --shadow-default: 0px 8px 13px -3px rgba(0, 0, 0, 0.07);
+  --shadow-card: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-card-2: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-switcher: 0px 2px 4px rgba(0, 0, 0, 0.2), inset 0px 2px 2px #FFFFFF, inset 0px -1px 1px rgba(0, 0, 0, 0.1);
+  --shadow-switch-1: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  --shadow-1: 0px 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-2: 0px 1px 4px rgba(0, 0, 0, 0.12);
+  --shadow-3: 0px 1px 5px rgba(0, 0, 0, 0.14);
+  --shadow-4: 0px 4px 10px rgba(0, 0, 0, 0.12);
+  --shadow-5: 0px 1px 1px rgba(0, 0, 0, 0.15);
+  --shadow-6: 0px 3px 15px rgba(0, 0, 0, 0.1);
+  --shadow-7: -5px 0 0 #313D4A, 5px 0 0 #313D4A;
+  --shadow-8: 1px 0 0 #313D4A, -1px 0 0 #313D4A, 0 1px 0 #313D4A, 0 -1px 0 #313D4A, 0 3px 13px rgb(0 0 0 / 8%);
+  --shadow-9: 0px 2px 3px rgba(183, 183, 183, 0.5);
+  --shadow-10: 0px 1px 2px 0px rgba(0, 0, 0, 0.10);
+  --shadow-11: 0px 1px 3px 0px rgba(166, 175, 195, 0.40);
+  --shadow-12: 0px 0.5px 3px 0px rgba(0, 0, 0, 0.18);
+  --shadow-13: 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+  --shadow-14: 0px 2px 3px 0px rgba(0, 0, 0, 0.10);
+
+  /* Animations */
+  --animate-linspin: linspin 1568.2353ms linear infinite;
+  --animate-easespin: easespin 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  --animate-left-spin: left-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  --animate-right-spin: right-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  --animate-ping-once: ping 5s cubic-bezier(0, 0, 0.2, 1);
+  --animate-rotating: rotating 30s linear infinite;
+  --animate-topbottom: topbottom 60s infinite alternate linear;
+  --animate-bottomtop: bottomtop 60s infinite alternate linear;
+  --animate-spin-1_5: spin 1.5s linear infinite;
+  --animate-spin-2: spin 2s linear infinite;
+  --animate-spin-3: spin 3s linear infinite;
+  --animate-line1: line 10s infinite linear;
+  --animate-line2: line-revert 8s infinite linear;
+  --animate-line3: line 7s infinite linear;
+}
+
+@keyframes linspin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes easespin {
+  12.5% { transform: rotate(135deg); }
+  25% { transform: rotate(270deg); }
+  37.5% { transform: rotate(405deg); }
+  50% { transform: rotate(540deg); }
+  62.5% { transform: rotate(675deg); }
+  75% { transform: rotate(810deg); }
+  87.5% { transform: rotate(945deg); }
+  100% { transform: rotate(1080deg); }
+}
+
+@keyframes left-spin {
+  0% { transform: rotate(130deg); }
+  50% { transform: rotate(-5deg); }
+  100% { transform: rotate(130deg); }
+}
+
+@keyframes right-spin {
+  0% { transform: rotate(-130deg); }
+  50% { transform: rotate(5deg); }
+  100% { transform: rotate(-130deg); }
+}
+
+@keyframes rotating {
+  0%, 100% { transform: rotate(360deg); }
+  50% { transform: rotate(0deg); }
+}
+
+@keyframes topbottom {
+  0%, 100% { transform: translate3d(0, -100%, 0); }
+  50% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes bottomtop {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -100%, 0); }
+}
+
+@keyframes line {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(100%); }
+}
+
+@keyframes line-revert {
+  0%, 100% { transform: translateY(100%); }
+  50% { transform: translateY(0); }
+}
